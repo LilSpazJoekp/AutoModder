@@ -1,0 +1,51 @@
+repos:
+  - repo: local
+    hooks:
+      - id: sort_code
+        args:
+          - codemod
+          - sort_code.SortCodeCommand
+          - automodder
+        entry: python -m libcst.tool
+        language: system
+        name: Sort code
+        pass_filenames: false
+        types: [ python ]
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-executables-have-shebangs
+      - id: check-shebang-scripts-are-executable
+      - id: check-toml
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+        args: [ --fix=auto ]
+      - id: sort-simple-yaml
+        files: ^(\.libcst\.codemod\.ya?ml)$
+      - id: trailing-whitespace
+
+  - repo: https://github.com/pappasam/toml-sort
+    rev: v0.23.1
+    hooks:
+      - id: toml-sort-fix
+        files: ^(.*\.toml)$
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.0.290
+    hooks:
+      - id: ruff
+        args: [ --exit-non-zero-on-fix, --fix ]
+        files: ^(automodder/.*.py)$
+
+  - repo: https://github.com/psf/black
+    hooks:
+      - id: black
+    rev: 23.9.1
+
+  - repo: https://github.com/LilSpazJoekp/docstrfmt
+    hooks:
+      - id: docstrfmt
+        require_serial: true
+    rev: v1.5.1
